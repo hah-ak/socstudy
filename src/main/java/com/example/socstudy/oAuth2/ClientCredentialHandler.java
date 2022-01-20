@@ -20,8 +20,8 @@ public class ClientCredentialHandler {
     private String token = null;
     private Instant tokenExpiry = null;
 
-    private final String CLIENT_ID = "7a62452e6f294562bb1519c087c299fd";
-    private final String CLIENT_SECRET = "tyWTEtCvEF9fRR3SyyA5OET6AEirKmtJ";
+    private final String CLIENT_ID = "";
+    private final String CLIENT_SECRET = "";
 
     private final String TOKEN_URI = "https://kr.battle.net/oauth/token";
 

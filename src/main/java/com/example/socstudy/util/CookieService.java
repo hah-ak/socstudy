@@ -1,13 +1,21 @@
 package com.example.socstudy.util;
 
 
-import org.springframework.stereotype.Service;
+import com.example.socstudy.main.blizzard.vo.AuthorizationTokenVo;
 
-@Service
-public class CookieService {
+import javax.servlet.http.Cookie;
 
-    public <T> String createCookie(T a) {
-//        a.getClass().getDeclaredFields()
-        return "";
+public final class CookieService {
+
+    public static <T> Cookie createCookie(T a) {
+        String cookieValue = "";
+        if (a instanceof AuthorizationTokenVo) {
+            AuthorizationTokenVo vo = (AuthorizationTokenVo) a;
+//            cookieValue = "ACCESS_TOKEN=" + vo.getAccessToken();
+            cookieValue = vo.getAccessToken();
+        }
+
+        Cookie cookie = new Cookie("ACCESS_TOKEN",cookieValue);
+        return cookie;
     }
 }

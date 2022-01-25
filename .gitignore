@@ -37,4 +37,4 @@ out/
 .vscode/
 
 **/node_modules/
-**/json/service-acct.json
+service-acct.json

@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class Main {
 
-    @RequestMapping("/")
-    public String main(HttpServletRequest httpServletRequest, Model model) {
-        try {
-
-        } catch (Exception e) {
-
-        }
-
-
-        return "index";
-    }
+//    @RequestMapping("/")
+//    public String main(HttpServletRequest httpServletRequest, Model model) {
+//        try {
+//
+//        } catch (Exception e) {
+//
+//        }
+//
+//
+//        return "index";
+//    }
 
     @PostMapping("/soc")
     @ResponseBody

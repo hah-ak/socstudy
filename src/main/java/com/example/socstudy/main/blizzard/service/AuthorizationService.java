@@ -8,16 +8,24 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class AuthorizationService {
 
-    public void getToken(String code, HttpServletResponse response) {
+    public void setToken(String code, HttpServletResponse response) {
+
+        AuthorizationTokenVo vo = new AuthorizationTokenVo();;
         try {
-            AuthorizationTokenVo vo = new Gson().fromJson(new AuthorizationCodeHandler().getAccessToken(code), AuthorizationTokenVo.class);
-            response.addCookie(CookieService.createCookie(vo));
+            vo = new AuthorizationCodeHandler().getAccessToken(code);
+            vo.wait();
+            System.out.println(vo);
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+
         }
+        System.out.println(vo.getAccessToken());
+        response.addCookie(CookieService.createCookie(vo));
     }
 }

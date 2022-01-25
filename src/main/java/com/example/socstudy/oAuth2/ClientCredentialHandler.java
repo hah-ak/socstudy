@@ -20,8 +20,8 @@ public class ClientCredentialHandler {
     private String token = null;
     private Instant tokenExpiry = null;
 
-    private final String CLIENT_ID = "";
-    private final String CLIENT_SECRET = "";
+    private final String CLIENT_ID = OauthKey.BLIZZARD_API_KEY_MAP.get(OauthKey.ApiKeyEnum.CLIENT_ID);
+    private final String CLIENT_SECRET = OauthKey.BLIZZARD_API_KEY_MAP.get(OauthKey.ApiKeyEnum.CLIENT_SECRET);
 
     private final String TOKEN_URI = "https://kr.battle.net/oauth/token";
 

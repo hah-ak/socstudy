@@ -18,12 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class chatBotRest {
 
-    @Value("classpath:json/service-acct.json")
-    private Resource resource;
-
     @GetMapping("/goChat")
     public void goChat() {
-        System.out.println(resource);
 //        String protocol = "https://";
 //        String authurl = "accounts.google.com/o/oauth2/v2/auth";
 //        String scope = "?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&";

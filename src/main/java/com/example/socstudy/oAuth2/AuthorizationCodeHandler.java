@@ -1,5 +1,8 @@
 package com.example.socstudy.oAuth2;
 
+import com.example.socstudy.main.blizzard.vo.AuthorizationTokenVo;
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,25 +14,27 @@ public class AuthorizationCodeHandler {
     private BufferedWriter bufferedWriter = null;
     private BufferedReader bufferedReader = null;
     HttpURLConnection connection = null;
-    private final String CLIENT_ID = "7a62452e6f294562bb1519c087c299fd";
-    private final String CLIENT_SECRET = "tyWTEtCvEF9fRR3SyyA5OET6AEirKmtJ";
+    private final String CLIENT_ID = OauthKey.BLIZZARD_API_KEY_MAP.get(OauthKey.ApiKeyEnum.CLIENT_ID);
+    private final String CLIENT_SECRET = OauthKey.BLIZZARD_API_KEY_MAP.get(OauthKey.ApiKeyEnum.CLIENT_SECRET);
     private final String GRANT_TYPE = "authorization_code";
     private final String AUTHORIZE_REQUEST_URI = "https://kr.battle.net/oauth/authorize";
     private final String ACCESS_TOKEN_REQUEST_URI = "https://kr.battle.net/oauth/token";
+
+
     public String getAuthorizationRequestURL() {
 
         StringBuilder fullURL = new StringBuilder();
         fullURL.append(AUTHORIZE_REQUEST_URI);
         fullURL.append("?client_id="+CLIENT_ID);
         fullURL.append("&scope=sc2.profile");
-        fullURL.append("&redirect_uri=http://localhost:3003");
+        fullURL.append("&redirect_uri=http://localhost:3003/getCode");
         fullURL.append("&response_type=code");
 
         return fullURL.toString();
 
     }
 
-    public String getAccessToken(String code) throws IOException {
+    public synchronized AuthorizationTokenVo getAccessToken(String code) throws IOException {
 
         StringBuilder returnValue = new StringBuilder();
 
@@ -39,7 +44,7 @@ public class AuthorizationCodeHandler {
             fullUrl.append(ACCESS_TOKEN_REQUEST_URI);
             fullUrl.append("?grant_type=" + GRANT_TYPE);
             fullUrl.append("&code=" + code);
-            fullUrl.append("&redirect_uri=http://localhost:3003");
+            fullUrl.append("&redirect_uri=http://localhost:3003/getCode");
             fullUrl.append("&client_id=" + CLIENT_ID);
             fullUrl.append("&client_secret="+CLIENT_SECRET);
 
@@ -81,7 +86,8 @@ public class AuthorizationCodeHandler {
                 connection.disconnect();
             }
         }
-        return returnValue.toString();
+        AuthorizationTokenVo vo = new Gson().fromJson(returnValue.toString(), AuthorizationTokenVo.class);
+        return vo;
     }
 
 }

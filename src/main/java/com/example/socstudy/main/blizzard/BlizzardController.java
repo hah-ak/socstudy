@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/blizzard")
+@RequestMapping("/api/blizzard")
 public class BlizzardController {
 
     private final AuthorizationService authorizationService;
@@ -45,8 +45,8 @@ public class BlizzardController {
         return new AuthorizationCodeHandler().getAuthorizationRequestURL();
     }
 
-    @GetMapping(value = "/getCode")
+    @GetMapping(value = "/setToken")
     public void getAccessCode(@RequestParam(value = "code") String code, HttpServletResponse response) {
-        authorizationService.getToken(code, response);
+        authorizationService.setToken(code, response);
     }
 }

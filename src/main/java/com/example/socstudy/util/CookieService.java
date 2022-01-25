@@ -16,6 +16,9 @@ public final class CookieService {
         }
 
         Cookie cookie = new Cookie("ACCESS_TOKEN",cookieValue);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        cookie.setMaxAge(60*60);
         return cookie;
     }
 }

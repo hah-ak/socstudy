@@ -3,6 +3,8 @@ package com.example.socstudy;
 import com.example.socstudy.main.blizzard.vo.AuthorizationTokenVo;
 import com.example.socstudy.main.document.Sample;
 import com.example.socstudy.procInterface.mongoTestInterfaces.MongoDbInterface;
+
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,15 +12,16 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
+
 
 @SpringBootTest
 class SocStudyApplicationTests {
 
     @Value("classpath:/static/json/service-acct.json")
     private Resource resource;
+
+    private static final EnumMap<APIType, ApiKeyVo> API_MAP = new EnumMap<>(APIType.class);
 
 //    @Value("${spring.data.mongodb.uri}")
 //    private String uri;
@@ -30,12 +33,28 @@ class SocStudyApplicationTests {
     @Autowired
     private DefaultListableBeanFactory defaultListableBeanFactory;
 
+    enum APIType {
+        BLIZZARD,GOOGLE;
+    }
+    public class ApiKeyVo {
+        private String CLIENT_KEY;
+        private String CLIENT_SECRET;
+        private String API_KEY;
+    }
     @Test
     void contextLoads() {
-        AuthorizationTokenVo a = new AuthorizationTokenVo();
-        Field[] f = a.getClass().getDeclaredFields();
-        Method[] m = a.getClass().getDeclaredMethods();
-        a.getClass().getSimpleName();
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            EnumMap<APIType, ApiKeyVo> map = objectMapper.readValue(resource.getURL(), new EnumMap<APIType, ApiKeyVo>(APIType.class).getClass());
+//
+//            API_MAP.putAll(map);
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//        String[] sts = new Gson().fromJson("[\"ba\",\"an\",\"nan\",\"ban\",\"n\"]",String[].class);
+        int[][] puddles = new Gson().fromJson("[[2, 2]]",int[][].class);
+        System.out.println(solution2(4,3,puddles));
+//        System.out.println(solution(sts,"banana"));
 
 //        System.out.println(uri);
 //        try {
@@ -90,6 +109,93 @@ class SocStudyApplicationTests {
 //        }
 //        return answer.trim();
 //    }
+
+    public int solution2(int m, int n, int[][] puddles) {
+
+        ArrayList<ArrayList<Integer>> arrayLists = new ArrayList<>(n);
+        for (int i = 0; i < arrayLists.size(); i++) {
+            ArrayList<Integer> add = new ArrayList<>(m);
+            Collections.fill(add,-1);
+            arrayLists.set(i,add);
+        }
+
+        for (int i = 0; i < puddles.length; i++) {
+            int puddle[] = puddles[i];
+            arrayLists.get(puddle[1]-1).set(puddle[0]-1,-1);
+        }
+        dynamicProgramming(m-1,n-1, arrayLists);
+        return 1 % 1000000007;
+    }
+
+    public void dynamicProgramming(int m, int n, ArrayList<ArrayList<Integer>> arrayLists) {
+
+        if (n == arrayLists.size() && m == arrayLists.get(0).size()) {
+
+        } else {
+            if (arrayLists.get(n).get(m-1) == -1) {
+                dynamicProgramming(n,m-1,arrayLists);
+            }
+            if (arrayLists.get(n-1).get(m) == -1) {
+                dynamicProgramming(n-1,m,arrayLists);
+            }
+            arrayLists.get(n).set(m,arrayLists.get(n-1).get(m) + arrayLists.get(n).get(m-1));
+        }
+
+        if (m == 1) {
+            arrayLists.get(n).set(m,arrayLists.get(n-1).get(m));
+        }
+        if (n == 1) {
+            arrayLists.get(n).set(m,arrayLists.get(n).get(m-1));
+        }
+
+
+    }
+
+    public int solution(String[] str, String t) {
+
+        HashMap<Character, ArrayList<String>> strMap = new HashMap<>();
+        String subString = t.substring(0,t.length());
+
+        for (String s: str) {
+            try {
+                strMap.get(s.charAt(0)).add(s);
+            } catch (Exception e) {
+                ArrayList<String> subList = new ArrayList<>();
+                subList.add(s);
+                strMap.put(s.charAt(0),subList);
+            }
+        }
+
+        strMap.forEach((character, strings) -> strings.sort(Comparator.comparingInt(String::length).reversed()));
+
+        int result = recursion(subString,strMap,0);
+
+        return result == 20000 ? -1 : result;
+    }
+
+    public int recursion(String subString,HashMap<Character,ArrayList<String>> strMap, int cnt) {
+        if (subString.equals("")) {
+            return cnt;
+        }
+
+        int result = 20000;
+
+        char first = subString.charAt(0);
+        try {
+            for (String s: strMap.get(first)) {
+                if (subString.substring(0,s.length()).equals(s)) {
+                    String newSubString = subString.substring(s.length());
+                    int newResult = recursion(newSubString, strMap, cnt + 1);
+                    result = newResult < result ? newResult : result;
+                }
+            }
+        } catch (Exception e) {
+            return result;
+        }
+        return result;
+    }
+
+
 
     public <T> String aaaaa(T a) {
         AuthorizationTokenVo authorizationTokenVo = a instanceof AuthorizationTokenVo ? ((AuthorizationTokenVo) a) : null;

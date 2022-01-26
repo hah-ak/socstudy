@@ -1,7 +1,9 @@
 package com.example.socstudy.oAuth2;
 
 import com.example.socstudy.main.blizzard.vo.AuthorizationTokenVo;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -86,7 +88,8 @@ public class AuthorizationCodeHandler {
                 connection.disconnect();
             }
         }
-        AuthorizationTokenVo vo = new Gson().fromJson(returnValue.toString(), AuthorizationTokenVo.class);
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        AuthorizationTokenVo vo = gson.fromJson(returnValue.toString(), AuthorizationTokenVo.class);
         return vo;
     }
 

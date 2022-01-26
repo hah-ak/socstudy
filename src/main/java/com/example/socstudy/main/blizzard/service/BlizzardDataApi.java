@@ -1,4 +1,4 @@
-package com.example.socstudy.main.blizzard;
+package com.example.socstudy.main.blizzard.service;
 
 
 import com.example.socstudy.oAuth2.ClientCredentialHandler;
@@ -40,15 +40,15 @@ public class BlizzardDataApi {
         return sb.toString();
     }
 
-    public String getSc2UserInfo() throws IOException {
-        String token = new ClientCredentialHandler().getToken();
+    public String getOauthUseAPi(String token,String mUrl) throws IOException {
 
-        URL url = new URL("https://kr.battle.net/oauth/userinfo?access_token=" + token);
+        URL url = new URL(mUrl);
         httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");
-//        httpURLConnection.setRequestProperty("Authorization","Bearer " + token);
+        httpURLConnection.setRequestProperty("Authorization","Bearer " + token);
         httpURLConnection.setRequestProperty("content-Type",MediaType.APPLICATION_JSON_VALUE);
         httpURLConnection.setDoInput(true);
+        httpURLConnection.setDoOutput(true);
 
         int responseCode = httpURLConnection.getResponseCode();
         bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));

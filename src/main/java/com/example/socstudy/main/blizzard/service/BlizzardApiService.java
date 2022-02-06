@@ -9,7 +9,8 @@ public class BlizzardApiService {
 
     public String getBlizzardUserInfo(HttpServletRequest request) {
         try {
-            return new BlizzardDataApi().getOauthUseAPi(request.getHeader("BLIZZARD"),"https://kr.battle.net/oauth/userinfo");
+            String attribute = request.getSession().getAttribute("BLIZZARD_TOKEN").toString();
+            return new BlizzardDataApi().getOauthUseAPi(attribute,"https://kr.battle.net/oauth/userinfo");
         } catch (Exception e) {
 
         }

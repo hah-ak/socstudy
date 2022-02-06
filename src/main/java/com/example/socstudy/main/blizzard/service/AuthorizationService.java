@@ -6,12 +6,14 @@ import com.example.socstudy.oAuth2.AuthorizationCodeHandler;
 import com.example.socstudy.util.CookieService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @Service
 public class AuthorizationService {
 
-    public String setToken(String code, HttpServletResponse response) {
+    public String setToken(String code, HttpServletRequest request ,HttpServletResponse response) {
 
         AuthorizationTokenVo vo = new AuthorizationTokenVo();;
         try {
@@ -21,12 +23,20 @@ public class AuthorizationService {
         } finally {
 
         }
+
         response.addCookie(CookieService.createCookie(vo));
+        request.getSession().setAttribute("BLIZZARD_TOKEN",vo.getAccessToken());
         return vo.getAccessToken();
 
     }
 
-    public String getAuthUrl() {
-        return new AuthorizationCodeHandler().getAuthorizationRequestURL();
+    public String getAuthUrl(HttpServletRequest request) {
+        try {
+            String result = new AuthorizationCodeHandler().getAuthorizationRequestURL(request);
+            return result;
+        } catch (Exception e) {
+            return "error";
+        }
+
     }
 }

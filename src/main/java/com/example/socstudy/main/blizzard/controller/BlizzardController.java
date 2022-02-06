@@ -22,6 +22,7 @@ public class BlizzardController {
         this.authorizationService = authorizationService;
         this.blizzardApiService = blizzardApiService;
     }
+
     @GetMapping("/blizzardUserInfo")
     public String getBlizzardUserInfo(HttpServletRequest request) {
         return blizzardApiService.getBlizzardUserInfo(request);
@@ -51,12 +52,14 @@ public class BlizzardController {
     }
 
     @GetMapping("/blizzardLogin")
-    public String getAuthURL() {
-        return authorizationService.getAuthUrl();
+    public String getAuthURL(HttpServletRequest request) {
+        System.out.println(request);
+        return authorizationService.getAuthUrl(request);
     }
 
     @GetMapping(value = "/setToken")
-    public String getAccessCode(@RequestParam(value = "code") String code, HttpServletResponse response) {
-        return authorizationService.setToken(code, response);
+    public String getAccessCode(@RequestParam(value = "code") String code,
+                                HttpServletRequest request, HttpServletResponse response) {
+        return authorizationService.setToken(code, request, response);
     }
 }

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -32,8 +31,9 @@ public class AuthorizationCodeHandler {
 
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         digest.update(sessionId.getBytes(StandardCharsets.UTF_8));
-        String str = new String(digest.digest(),StandardCharsets.UTF_8);
-        String urlStr = URLEncoder.encode(str,StandardCharsets.UTF_8);
+
+        String urlStr = Base64.getEncoder().encodeToString(digest.digest());
+
 
         StringBuilder fullURL = new StringBuilder();
         fullURL.append(AUTHORIZE_REQUEST_URI);
@@ -43,7 +43,7 @@ public class AuthorizationCodeHandler {
         fullURL.append("&state=" + urlStr);
         fullURL.append("&response_type=code");
 
-        request.getSession().setAttribute("state",digest);
+        request.getSession().setAttribute("STATE",urlStr);
 
         return fullURL.toString();
 

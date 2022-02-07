@@ -4,6 +4,7 @@ package com.example.socstudy.main.blizzard.service;
 import com.example.socstudy.oAuth2.ClientCredentialHandler;
 import org.springframework.http.MediaType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,8 +41,15 @@ public class BlizzardDataApi {
         return sb.toString();
     }
 
-    public String getOauthUseAPi(String token,String mUrl) throws IOException {
+    public String getOauthUseAPi(HttpServletRequest request, String mUrl) throws IOException {
+        String remoteAddr = request.getRemoteAddr();
+        String sessionAddr = (String) request.getSession().getAttribute("IP");
 
+        if ( !sessionAddr.equals(remoteAddr) && remoteAddr != null && sessionAddr != null) {
+            throw new IOException("ip 불량");
+        }
+
+        String token = request.getSession().getAttribute("BLIZZARD_TOKEN").toString();
         URL url = new URL(mUrl);
         httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod("GET");

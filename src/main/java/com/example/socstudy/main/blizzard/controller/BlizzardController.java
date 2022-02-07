@@ -2,15 +2,16 @@ package com.example.socstudy.main.blizzard.controller;
 
 
 import com.example.socstudy.main.blizzard.service.BlizzardApiService;
-import com.example.socstudy.main.blizzard.service.BlizzardDataApi;
 import com.example.socstudy.main.blizzard.service.AuthorizationService;
-import com.example.socstudy.oAuth2.AuthorizationCodeHandler;
+import com.example.socstudy.main.blizzard.vo.Sc2ProfileReqVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/blizzard")
 public class BlizzardController {
@@ -27,33 +28,22 @@ public class BlizzardController {
     public String getBlizzardUserInfo(HttpServletRequest request) {
         return blizzardApiService.getBlizzardUserInfo(request);
     }
-    @GetMapping("/sc3")
-    public String getData() {
-        String get;
-        try {
-            get = new BlizzardDataApi().getSC2Data();
-        } catch (Exception e) {
-            get = "error";
-        }
+
+
+    @GetMapping("/sc2Player")
+    public String getUserInfo(@RequestParam int profileId, HttpServletRequest request) {
+        String get = blizzardApiService.getSc2Player(request,profileId);
         return get;
     }
 
-    @GetMapping("/sc2UserInfo")
-    public String getUserInfo(HttpServletRequest request) {
-
-        String get;
-        try {
-//            get = new BlizzardDataApi().getSc2UserInfo();
-            get = "";
-        } catch (Exception e) {
-            get="error";
-        }
+    @PostMapping("/sc2Profile")
+    public String getData(@RequestBody Sc2ProfileReqVo sc2ProfileReqVo, HttpServletRequest request) {
+        String get = blizzardApiService.getSc2Profile(request, sc2ProfileReqVo);
         return get;
     }
 
     @GetMapping("/blizzardLogin")
     public String getAuthURL(HttpServletRequest request) {
-        System.out.println(request);
         return authorizationService.getAuthUrl(request);
     }
 

@@ -52,4 +52,9 @@ public class BlizzardController {
                                 HttpServletRequest request, HttpServletResponse response) {
         return authorizationService.setToken(code, request, response);
     }
+
+    @PostMapping("/owPlayer/insert")
+    public void insert() {
+
+    }
 }

@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation 'org.springframework.boot:spring-boot-starter-rsocket'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:2.5.3'
     implementation('org.springframework.boot:spring-boot-starter-web') {
         exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
         exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-websocket'

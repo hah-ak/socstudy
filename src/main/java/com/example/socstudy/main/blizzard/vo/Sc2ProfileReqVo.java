@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Sc2ProfileReqVo {
+
     private String region = "kr";
     private String avatarUrl;
     private String name;

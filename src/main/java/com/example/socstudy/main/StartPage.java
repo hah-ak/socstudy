@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -22,21 +23,23 @@ import java.util.List;
 @RestController
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class StartPage {
-
+    ApplicationContext applicationContext;
     private final MongoDbInterface mongoDbInterface;
     private final MongoDbInterface2 mongoDbInterface2;
     private final MongoDbOAuthInterface mongoInterface2;
 
     @Autowired
-    public StartPage(MongoDbInterface mongoDbInterface, MongoDbInterface2 mongoDbInterface2, MongoDbOAuthInterface mongoInterface2) {
+    public StartPage(MongoDbInterface mongoDbInterface, MongoDbInterface2 mongoDbInterface2, MongoDbOAuthInterface mongoInterface2, ApplicationContext applicationContext) {
         this.mongoDbInterface = mongoDbInterface;
         this.mongoDbInterface2 = mongoDbInterface2;
         this.mongoInterface2 = mongoInterface2;
+        this.applicationContext = applicationContext;
 
     }
 
     @PostMapping("/normal")
     public String noraml(@RequestBody String text) {
+
         try {
 
         } catch (Exception e) {

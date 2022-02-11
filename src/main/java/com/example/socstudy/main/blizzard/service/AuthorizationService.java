@@ -2,6 +2,7 @@ package com.example.socstudy.main.blizzard.service;
 
 
 import com.example.socstudy.main.blizzard.vo.AuthorizationTokenVo;
+import com.example.socstudy.main.blizzard.vo.Sc2ProfileReqVo;
 import com.example.socstudy.oAuth2.AuthorizationCodeHandler;
 import com.example.socstudy.util.CookieService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +33,11 @@ public class AuthorizationService {
     }
 
     public String getAuthUrl(HttpServletRequest request) {
+
         try {
             String result = new AuthorizationCodeHandler().getAuthorizationRequestURL(request);
             return result;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return "error";
         }
     }
